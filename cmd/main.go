@@ -33,7 +33,7 @@ func main() {
 	app.Get("/", h.Home())
 
 	app.Get("/login", h.NotLoggedIn(), h.LoginPage())
-	app.Get("/logout", h.Logout())
+	app.Get("/logout", h.Prottected(), h.Logout())
 
 	app.Post("/login", h.NotLoggedIn(), h.Login())
 
@@ -51,6 +51,8 @@ func main() {
 	app.Post("/comment/:id/like", h.Prottected(), h.LikeComment())
 
 	app.Get("/user/:username", h.UserPage())
+
+	app.Get("/category/:id", h.CatPage())
 
 	app.Listen("8080")
 }

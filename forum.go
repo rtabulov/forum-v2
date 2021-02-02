@@ -1,13 +1,9 @@
 package forum
 
 import (
-
-	// load environment variables
 	"fmt"
 	"time"
 
-	// load environment varaiables
-	_ "github.com/rtabulov/envar/autoload"
 	uuid "github.com/satori/go.uuid"
 )
 

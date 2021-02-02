@@ -1,6 +1,11 @@
 {{define "body"}}
 
 <div class="container">
+    {{if .Cat}}
+
+    <h1>{{.Cat.Title}}</h1>
+    <p>{{.Cat.Description}}</p>
+    {{end}}
     <table class="responsive-table">
         <thead>
             <tr>

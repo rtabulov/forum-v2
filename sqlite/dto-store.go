@@ -81,6 +81,44 @@ func (s *Store) UserPostsDTO(userID uuid.UUID) ([]forum.PostDTO, error) {
 	return posts, nil
 }
 
+// CatPostsDTO func
+func (s *Store) CatPostsDTO(catID uuid.UUID) ([]forum.PostDTO, error) {
+	pp, err := s.PostsByCat(catID)
+	if err != nil {
+		return nil, err
+	}
+	posts := make([]forum.PostDTO, len(pp))
+
+	for i, p := range pp {
+		cat, err := s.Cat(p.CatID)
+		if err != nil {
+			return nil, err
+		}
+		user, err := s.User(p.UserID)
+		if err != nil {
+			return nil, err
+		}
+		likes, err := s.LikesByPost(p.ID)
+		if err != nil {
+			return nil, err
+		}
+		comments, err := s.CommentsDTO(p.ID)
+		if err != nil {
+			return nil, err
+		}
+
+		cp := p
+		posts[i] = forum.PostDTO{
+			Post:     &cp,
+			Cat:      cat,
+			User:     user,
+			Likes:    likes,
+			Comments: comments}
+	}
+
+	return posts, nil
+}
+
 // PostDTO func
 func (s *Store) PostDTO(id uuid.UUID) (*forum.PostDTO, error) {
 

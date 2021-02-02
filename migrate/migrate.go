@@ -10,13 +10,12 @@ import (
 func Migrate(migrationsSource string, db *sql.DB) error {
 	data, err := ioutil.ReadFile(migrationsSource)
 	if err != nil {
-		return fmt.Errorf("error in migrations: %w", err)
+		return fmt.Errorf("error reading migrations file: %w", err)
 	}
 
 	_, err = db.Exec(string(data))
-	if err != nil {
-		return fmt.Errorf("error in migrations: %w", err)
-	}
-
+	// if err != nil {
+	// 	return fmt.Errorf("error in migrations: %w", err)
+	// }
 	return nil
 }

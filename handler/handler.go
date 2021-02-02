@@ -26,6 +26,7 @@ type responseData struct {
 	Post     *forum.PostDTO
 	PageUser *forum.User
 	Cats     []forum.Cat
+	Cat      *forum.Cat
 }
 
 // NewHandler func
