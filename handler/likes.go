@@ -12,12 +12,13 @@ import (
 func (h *Handler) LikePost() e.Middleware {
 	return func(req *e.Request, res *e.Response, next e.Next) {
 		user, _ := req.CustomData["User"].(*forum.User)
+
+		post, ok := req.Param("id")
 		if user == nil {
-			res.Error("Unauthorized", http.StatusUnauthorized)
+			res.Redirect("/post/" + post)
 			return
 		}
 
-		post, ok := req.Param("id")
 		postID, err := uuid.FromString(post)
 		if !ok || err != nil {
 			res.Error("Bad request", http.StatusBadRequest)
@@ -59,13 +60,15 @@ func (h *Handler) LikePost() e.Middleware {
 func (h *Handler) LikeComment() e.Middleware {
 	return func(req *e.Request, res *e.Response, next e.Next) {
 		user, _ := req.CustomData["User"].(*forum.User)
-		if user == nil {
-			res.Error("Unauthorized", http.StatusUnauthorized)
-			return
-		}
 
 		c, ok := req.Param("id")
 		cID, err := uuid.FromString(c)
+		comm, _ := h.Store.Comment(cID)
+		if user == nil {
+			res.Redirect("/post/" + comm.PostID.String())
+			return
+		}
+
 		if !ok || err != nil {
 			res.Error("Bad request", http.StatusBadRequest)
 			return
@@ -98,7 +101,6 @@ func (h *Handler) LikeComment() e.Middleware {
 			}
 		}
 
-		comm, _ := h.Store.Comment(cID)
 		res.Redirect("/post/" + comm.PostID.String())
 	}
 }
