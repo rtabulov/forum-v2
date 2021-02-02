@@ -1,0 +1,42 @@
+{{define "body"}}
+
+<div class="container">
+    <div class="row">
+        <form
+            style="padding-top: 50px; padding-bottom: 50px"
+            class="col s4 offset-s4"
+            action="/login"
+            method="POST"
+        >
+            <div class="row">
+                <div class="input-field col s12">
+                    <label for="username">Username</label>
+                    <input
+                        id="username"
+                        name="username"
+                        type="text"
+                        autocomplete="off"
+                        class="white-text validate"
+                        required
+                    />
+                </div>
+
+                <div class="input-field col s12">
+                    <label for="password">Password</label>
+                    <input
+                        class="white-text validate"
+                        id="password"
+                        name="password"
+                        type="password"
+                        autocomplete="off"
+                        required
+                    />
+                </div>
+            </div>
+
+            <button type="submit" class="btn blue-grey darken-2">Log in</button>
+        </form>
+    </div>
+</div>
+
+{{end}}

@@ -1,0 +1,98 @@
+{{define "body"}}
+
+<div class="container">
+    {{with .Post}}
+    <div class="blue-grey darken-3" style="padding: 30px; margin: 30px 0">
+        <div
+            class="grey-text text-lighten-1"
+            style="display: flex; justify-content: space-between"
+        >
+            <span>{{.User.Username}}</span>
+            <span>⌚{{.FormattedTime}}</span>
+        </div>
+        <h1 style="font-size: 1.75rem; margin-top: 10px">{{.Title}}</h1>
+        <p>
+            <span class="btn black btn-small">{{.Cat.Title}}</span>
+        </p>
+
+        <hr />
+
+        <p>{{.Body}}</p>
+
+        <div style="display: flex; font-size: 1.5rem">
+            <form
+                action="/post/{{.ID}}/like"
+                method="POST"
+                style="margin-right: 5px"
+            >
+                <input type="hidden" name="up" value="true" />
+                <button type="submit" class="btn btn-small black">
+                    👍🏽 {{.Likes.Upvotes}}
+                </button>
+            </form>
+            <form action="/post/{{.ID}}/like" method="POST">
+                <input type="hidden" name="up" value="false" />
+                <button type="submit" class="btn btn-small black">
+                    👎🏽 {{.Likes.Downvotes}}
+                </button>
+            </form>
+        </div>
+    </div>
+
+    {{range .Comments}}
+    <div class="blue-grey darken-3" style="padding: 30px; margin: 30px 0">
+        <div
+            class="grey-text text-lighten-1"
+            style="display: flex; justify-content: space-between"
+        >
+            <span>{{.User.Username}}</span>
+            <span>⌚{{.FormattedTime}}</span>
+        </div>
+        <p>{{.Body}}</p>
+
+        <div style="display: flex; font-size: 1.5rem">
+            <form
+                action="/comment/{{.ID}}/like"
+                method="POST"
+                style="margin-right: 5px"
+            >
+                <input type="hidden" name="up" value="true" />
+                <button type="submit" class="btn btn-small black">
+                    👍🏽 {{.Likes.Upvotes}}
+                </button>
+            </form>
+            <form action="/comment/{{.ID}}/like" method="POST">
+                <input type="hidden" name="up" value="false" />
+                <button type="submit" class="btn btn-small black">
+                    👎🏽 {{.Likes.Downvotes}}
+                </button>
+            </form>
+        </div>
+    </div>
+    {{end}}
+    <!-- end of comments -->
+    {{if not (eq (len .Comments) 0)}}
+    <div class="blue-grey-text text-darken-1 separator">
+        You reached the end of comments
+    </div>
+    {{end}} {{end}} {{if .User}}
+    <div class="blue-grey darken-3" style="padding: 30px; margin: 30px 0">
+        <form action="/post/{{.Post.ID}}/comment" method="POST">
+            <div class="input-field">
+                <label for="comment">Post your comment</label>
+                <textarea
+                    class="white-text validate materialize-textarea"
+                    id="comment"
+                    name="comment"
+                    autocomplete="off"
+                    minlength="3"
+                    required
+                ></textarea>
+            </div>
+            <button type="submit" class="btn black">post</button>
+        </form>
+    </div>
+    {{end}}
+</div>
+
+{{end}}

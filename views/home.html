@@ -1,0 +1,37 @@
+{{define "body"}}
+
+<div class="container">
+    <table class="responsive-table">
+        <thead>
+            <tr>
+                <th>🧑🏽</th>
+                <th>Topic</th>
+                <th>Category</th>
+                <th class="center-align red-text">❤</th>
+                <th class="center-align">💬</th>
+                <!-- <th>👀</th> -->
+                <th class="center-align">⌚</th>
+            </tr>
+        </thead>
+
+        <tbody>
+            {{range .Posts}}
+            <tr>
+                <td>
+                    <a href="/user/{{.User.Username}}">{{.User.Username}}</a>
+                </td>
+                <td>
+                    <a class="white-text" href="/post/{{.ID}}">{{.Title}}</a>
+                </td>
+                <td><span class="btn black btn-small">{{.Cat.Title}}</span></td>
+                <td class="center-align">{{.Likes.Votes}}</td>
+                <td class="center-align">{{len .Comments}}</td>
+                <!-- <td></td> -->
+                <td class="center-align">{{.FormattedTimePassed}}</td>
+            </tr>
+            {{end}}
+        </tbody>
+    </table>
+</div>
+
+{{end}}

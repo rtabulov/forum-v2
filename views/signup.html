@@ -1,0 +1,59 @@
+{{define "body"}}
+
+<div class="container">
+    <div class="row">
+        <form
+            style="padding-top: 50px; padding-bottom: 50px"
+            class="col s4 offset-s4"
+            action="/signup"
+            method="POST"
+        >
+            <div class="row">
+                <div class="input-field col s12">
+                    <label for="username">Username</label>
+                    <input
+                        id="username"
+                        name="username"
+                        type="text"
+                        autocomplete="off"
+                        class="white-text validate"
+                        pattern="[a-zA-Z\d]{3,}"
+                        required
+                        title="at least 3 characters, only letters and numbers"
+                    />
+                </div>
+
+                <div class="input-field col s12">
+                    <label for="email">Email</label>
+                    <input
+                        id="email"
+                        name="email"
+                        type="email"
+                        autocomplete="off"
+                        class="white-text validate"
+                        required
+                    />
+                </div>
+
+                <div class="input-field col s12">
+                    <label for="password">Password</label>
+                    <input
+                        required
+                        class="white-text validate"
+                        pattern=".{3,}"
+                        id="password"
+                        name="password"
+                        type="password"
+                        autocomplete="off"
+                    />
+                </div>
+            </div>
+
+            <button type="submit" class="btn blue-grey darken-2">
+                Sign up
+            </button>
+        </form>
+    </div>
+</div>
+
+{{end}}
