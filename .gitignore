@@ -1,5 +1,5 @@
 .env
-tmp/
-# vendor/
+# tmp/
+vendor/
 forum.db
 forum.db.journal

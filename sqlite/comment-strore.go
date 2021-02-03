@@ -53,7 +53,7 @@ func (s *CommentStore) CommentsByPost(postID uuid.UUID) ([]forum.Comment, error)
 // CreateComment func
 func (s *CommentStore) CreateComment(p *forum.Comment) error {
 	if p.ID == (uuid.UUID{}) {
-		p.ID = uuid.NewV4()
+		p.ID = uuid.Must(uuid.NewV4())
 	}
 
 	_, err := s.DB.Exec(`INSERT INTO comments (comment_id, user_id, post_id, body) 

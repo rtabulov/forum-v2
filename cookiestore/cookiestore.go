@@ -39,7 +39,7 @@ type CookieStore map[uuid.UUID]UserData
 
 // SetNewGuestCookie func
 func (c CookieStore) SetNewGuestCookie() *http.Cookie {
-	id := uuid.NewV4()
+	id := uuid.Must(uuid.NewV4())
 	c.Set(id, UserData{Guest: true, User: nil})
 	cookie := newCookie(id.String())
 	return cookie
@@ -51,7 +51,7 @@ func (c CookieStore) SetNewCookie(user *forum.User) *http.Cookie {
 		c.clear(sid)
 	}
 
-	id := uuid.NewV4()
+	id := uuid.Must(uuid.NewV4())
 	c.Set(id, UserData{Guest: false, User: user})
 	cookie := newCookie(id.String())
 

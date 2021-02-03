@@ -99,7 +99,7 @@ func (s *PostStore) PostsByUser(userID uuid.UUID) ([]forum.Post, error) {
 // CreatePost func
 func (s *PostStore) CreatePost(p *forum.Post) error {
 	if p.ID == (uuid.UUID{}) {
-		p.ID = uuid.NewV4()
+		p.ID = uuid.Must(uuid.NewV4())
 	}
 
 	_, err := s.DB.Exec(`INSERT INTO posts (post_id, cat_id, user_id, title, body) 

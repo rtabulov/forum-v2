@@ -50,7 +50,7 @@ func (s *CatStore) Cats() ([]forum.Cat, error) {
 // CreateCat func
 func (s *CatStore) CreateCat(c *forum.Cat) error {
 	if c.ID == (uuid.UUID{}) {
-		c.ID = uuid.NewV4()
+		c.ID = uuid.Must(uuid.NewV4())
 	}
 
 	_, err := s.DB.Exec(`INSERT INTO cats (cat_id, title, description) 
