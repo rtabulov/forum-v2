@@ -41,3 +41,20 @@ func (h *Handler) CatPage() e.Middleware {
 		}
 	}
 }
+
+// CatsPage func
+func (h *Handler) CatsPage() e.Middleware {
+	t := template.Must(template.ParseFiles("views/header.html", "views/cats.html"))
+	return func(req *e.Request, res *e.Response, next e.Next) {
+		cats, _ := h.Store.Cats()
+
+		user, _ := req.CustomData["User"].(*forum.User)
+		err := t.Execute(res, responseData{
+			User: user,
+			Cats: cats,
+		})
+		if err != nil {
+			log.Print(fmt.Errorf(`error executing home template: %w`, err))
+		}
+	}
+}

@@ -20,13 +20,14 @@ type message struct {
 type messages []message
 
 type responseData struct {
-	Messages messages
-	User     *forum.User
-	Posts    []forum.PostDTO
-	Post     *forum.PostDTO
-	PageUser *forum.User
-	Cats     []forum.Cat
-	Cat      *forum.Cat
+	Messages   messages
+	User       *forum.User
+	Posts      []forum.PostDTO
+	Post       *forum.PostDTO
+	PageUser   *forum.User
+	Cats       []forum.Cat
+	Cat        *forum.Cat
+	LikedPosts []forum.PostDTO
 }
 
 // NewHandler func

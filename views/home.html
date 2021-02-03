@@ -5,7 +5,10 @@
 
     <h1>{{.Cat.Title}}</h1>
     <p>{{.Cat.Description}}</p>
+    {{else}}
+    <h1>Welcome to THE forum</h1>
     {{end}}
+
     <table class="responsive-table">
         <thead>
             <tr>
@@ -28,7 +31,13 @@
                 <td>
                     <a class="white-text" href="/post/{{.ID}}">{{.Title}}</a>
                 </td>
-                <td><span class="btn black btn-small">{{.Cat.Title}}</span></td>
+                <td>
+                    <a
+                        href="/categories/{{.Cat.ID}}"
+                        class="btn black btn-small"
+                        >{{.Cat.Title}}</a
+                    >
+                </td>
                 <td class="center-align">{{.Likes.Votes}}</td>
                 <td class="center-align">{{len .Comments}}</td>
                 <!-- <td></td> -->

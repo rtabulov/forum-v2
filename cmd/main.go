@@ -52,7 +52,9 @@ func main() {
 
 	app.Get("/user/:username", h.UserPage())
 
-	app.Get("/category/:id", h.CatPage())
+	app.Get("/categories/:id", h.CatPage())
+
+	app.Get("/categories", h.CatsPage())
 
 	app.Listen("8080")
 }

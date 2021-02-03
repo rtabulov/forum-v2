@@ -1,0 +1,22 @@
+{{define "body"}}
+
+<div class="container">
+    <h1>Categories</h1>
+    <div class="collection">
+        {{range .Cats}}
+        <a
+            href="/categories/{{.ID}}"
+            class="collection-item blue-grey darken-3"
+        >
+            <span class="title white-text">{{.Title}}</span>
+            <span style="margin-left: 25px" class="grey-text text-lighten-2"
+                >{{.Description}}</span
+            >
+            <span class="secondary-content">
+                <i class="material-icons">send</i>
+            </span>
+        </a>
+        {{end}}
+    </div>
+</div>
+{{end}}

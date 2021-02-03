@@ -26,11 +26,17 @@ func (h *Handler) UserPage() e.Middleware {
 			res.Error("Internal error", http.StatusInternalServerError)
 			return
 		}
+		likedPosts, err := h.Store.LikedPostsDTO(pageUser.ID)
+		if err != nil {
+			res.Error("Internal error", http.StatusInternalServerError)
+			return
+		}
 		user, _ := req.CustomData["User"].(*forum.User)
 		err = t.Execute(res, responseData{
-			User:     user,
-			PageUser: pageUser,
-			Posts:    posts,
+			User:       user,
+			PageUser:   pageUser,
+			Posts:      posts,
+			LikedPosts: likedPosts,
 		})
 
 		if err != nil {

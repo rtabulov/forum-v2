@@ -1,38 +1,103 @@
 {{define "body"}}
 
 <div class="container">
-    <h1 style="font-size: 2rem ;">{{.PageUser.Username}}</h1>
-    <table class="responsive-table">
-        <thead>
-            <tr>
-                <th>🧑🏽</th>
-                <th>Topic</th>
-                <th>Category</th>
-                <th class="center-align red-text">❤</th>
-                <th class="center-align">💬</th>
-                <!-- <th>👀</th> -->
-                <th class="center-align">⌚</th>
-            </tr>
-        </thead>
+    <div class="row">
+        <h1 style="font-size: 2rem">{{.PageUser.Username}}</h1>
 
-        <tbody>
-            {{range .Posts}}
-            <tr>
-                <td>
-                    <a href="/user/{{.User.Username}}">{{.User.Username}}</a>
-                </td>
-                <td>
-                    <a class="white-text" href="/post/{{.ID}}">{{.Title}}</a>
-                </td>
-                <td><span class="btn black btn-small">{{.Cat.Title}}</span></td>
-                <td class="center-align">{{.Likes.Votes}}</td>
-                <td class="center-align">{{len .Comments}}</td>
-                <!-- <td></td> -->
-                <td class="center-align">{{.FormattedTimePassed}}</td>
-            </tr>
-            {{end}}
-        </tbody>
-    </table>
+        <div class="col s12">
+            <ul class="tabs blue-grey darken-4">
+                <li class="tab col s3">
+                    <a href="#created" class="active">Created</a>
+                </li>
+                <li class="tab col s3">
+                    <a href="#liked">Liked</a>
+                </li>
+            </ul>
+        </div>
+
+        <div id="created" class="col s12">
+            <table class="responsive-table">
+                <thead>
+                    <tr>
+                        <th>🧑🏽</th>
+                        <th>Topic</th>
+                        <th>Category</th>
+                        <th class="center-align red-text">❤</th>
+                        <th class="center-align">💬</th>
+                        <!-- <th>👀</th> -->
+                        <th class="center-align">⌚</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+                    {{range .Posts}}
+                    <tr>
+                        <td>
+                            <a href="/user/{{.User.Username}}"
+                                >{{.User.Username}}</a
+                            >
+                        </td>
+                        <td>
+                            <a class="white-text" href="/post/{{.ID}}"
+                                >{{.Title}}</a
+                            >
+                        </td>
+                        <td>
+                            <span class="btn black btn-small"
+                                >{{.Cat.Title}}</span
+                            >
+                        </td>
+                        <td class="center-align">{{.Likes.Votes}}</td>
+                        <td class="center-align">{{len .Comments}}</td>
+                        <!-- <td></td> -->
+                        <td class="center-align">{{.FormattedTimePassed}}</td>
+                    </tr>
+                    {{end}}
+                </tbody>
+            </table>
+        </div>
+
+        <div id="liked" class="col s12">
+            <table class="responsive-table">
+                <thead>
+                    <tr>
+                        <th>🧑🏽</th>
+                        <th>Topic</th>
+                        <th>Category</th>
+                        <th class="center-align red-text">❤</th>
+                        <th class="center-align">💬</th>
+                        <th class="center-align">⌚</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+                    {{range .LikedPosts}}
+                    <tr>
+                        <td>
+                            <a href="/user/{{.User.Username}}"
+                                >{{.User.Username}}</a
+                            >
+                        </td>
+                        <td>
+                            <a class="white-text" href="/post/{{.ID}}"
+                                >{{.Title}}</a
+                            >
+                        </td>
+                        <td>
+                            <span class="btn black btn-small"
+                                >{{.Cat.Title}}</span
+                            >
+                        </td>
+                        <td class="center-align">{{.Likes.Votes}}</td>
+                        <td class="center-align">{{len .Comments}}</td>
+                        <!-- <td></td> -->
+                        <td class="center-align">{{.FormattedTimePassed}}</td>
+                    </tr>
+                    {{end}}
+                </tbody>
+            </table>
+        </div>
+    </div>
 </div>
 
 {{end}}
