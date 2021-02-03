@@ -1,1 +1,1 @@
-web: ./tmp/main
+web: ls
