@@ -3,8 +3,8 @@ package handler
 import (
 	"fmt"
 
-	e "github.com/rtabulov/express"
 	"github.com/rtabulov/forum-v2"
+	e "github.com/rtabulov/forum-v2/express"
 )
 
 // Prottected func

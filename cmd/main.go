@@ -4,8 +4,8 @@ import (
 	"log"
 	"os"
 
-	e "github.com/rtabulov/express"
 	"github.com/rtabulov/forum-v2/cookiestore"
+	e "github.com/rtabulov/forum-v2/express"
 	"github.com/rtabulov/forum-v2/handler"
 	"github.com/rtabulov/forum-v2/middleware"
 	"github.com/rtabulov/forum-v2/sqlite"

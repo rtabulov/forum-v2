@@ -5,9 +5,9 @@ import (
 	"net/url"
 	"regexp"
 
-	e "github.com/rtabulov/express"
 	"github.com/rtabulov/forum-v2"
 	"github.com/rtabulov/forum-v2/cookiestore"
+	e "github.com/rtabulov/forum-v2/express"
 	"golang.org/x/crypto/bcrypt"
 )
 

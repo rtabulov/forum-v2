@@ -6,9 +6,9 @@ import (
 	"log"
 	"net/http"
 
-	e "github.com/rtabulov/express"
 	"github.com/rtabulov/forum-v2"
 	"github.com/rtabulov/forum-v2/cookiestore"
+	e "github.com/rtabulov/forum-v2/express"
 	"github.com/rtabulov/forum-v2/sqlite"
 )
 

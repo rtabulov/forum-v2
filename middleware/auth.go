@@ -1,8 +1,8 @@
 package middleware
 
 import (
-	e "github.com/rtabulov/express"
 	"github.com/rtabulov/forum-v2/cookiestore"
+	e "github.com/rtabulov/forum-v2/express"
 	uuid "github.com/satori/go.uuid"
 )
 

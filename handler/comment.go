@@ -4,8 +4,8 @@ import (
 	"log"
 	"net/http"
 
-	e "github.com/rtabulov/express"
 	"github.com/rtabulov/forum-v2"
+	e "github.com/rtabulov/forum-v2/express"
 	uuid "github.com/satori/go.uuid"
 )
 
