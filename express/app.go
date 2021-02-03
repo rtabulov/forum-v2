@@ -12,7 +12,7 @@ import (
 type App struct {
 	tree          routeTree
 	useMiddleware []Middleware
-	page404       []Middleware
+	page404       Middleware
 }
 
 // Map type
@@ -29,6 +29,9 @@ func NewApp() *App {
 	return &App{
 		useMiddleware: make([]Middleware, 0),
 		tree:          make(routeTree),
+		page404: func(req *Request, res *Response, next Next) {
+			res.Error("Not found", http.StatusNotFound)
+		},
 	}
 }
 
@@ -38,8 +41,8 @@ func (app *App) Use(mws ...Middleware) {
 }
 
 // Page404 func
-func (app *App) Page404(mws ...Middleware) {
-	app.page404 = append(app.page404, mws...)
+func (app *App) Page404(mw Middleware) {
+	app.page404 = mw
 }
 
 func (app *App) createEndpoint(path, method string, mw []Middleware) {
@@ -87,20 +90,24 @@ func (app *App) ServeHTTP(w http.ResponseWriter, req *http.Request) {
 	request, response := newRequestResponse(app, req, w)
 	queue := app.useMiddleware
 
+	found := false
 	for pattern, methods := range app.tree {
 		if match, params := helpers.MatchAndParams(pattern, request.URL.Path); match {
+			found = true
 			request.params = helpers.MergeStringMaps(request.params, params)
 
 			if mws, ok := methods[request.Method]; ok {
 				queue = append(queue, mws...)
 			} else {
 				response.Status(http.StatusMethodNotAllowed)
-				queue = append(queue, app.page404...)
+				queue = append(queue, app.page404)
 			}
-		} else {
-			response.Status(http.StatusNotFound)
-			queue = append(queue, app.page404...)
 		}
+	}
+
+	if !found {
+		response.Status(http.StatusNotFound)
+		queue = append(queue, app.page404)
 	}
 
 	// execute middleware
