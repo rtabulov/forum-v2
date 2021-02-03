@@ -8,7 +8,7 @@
 
 ### run
 
-`docker run -dp 8080:8080 forum .`
+`docker run -dp 8080:8080 forum`
 
 ## Manual
 
