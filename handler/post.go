@@ -71,6 +71,7 @@ func (h *Handler) CreatePost() e.Middleware {
 		user, _ := req.CustomData["User"].(*forum.User)
 		if user == nil {
 			res.Error("Unauthorized", http.StatusUnauthorized)
+			return
 		}
 		title := req.FormValue("title")
 		body := req.FormValue("body")
