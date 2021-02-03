@@ -2,6 +2,7 @@ package main
 
 import (
 	"log"
+	"os"
 
 	e "github.com/rtabulov/express"
 	"github.com/rtabulov/forum-v2/cookiestore"
@@ -12,6 +13,10 @@ import (
 )
 
 func main() {
+	port := os.Getenv("PORT")
+	if port == "" {
+		port = "8080"
+	}
 	store, err := sqlite.NewStore("forum.db")
 	if err != nil {
 		log.Fatal(err)
@@ -56,5 +61,5 @@ func main() {
 
 	app.Get("/categories", h.CatsPage())
 
-	app.Listen("8080")
+	app.Listen(port)
 }
