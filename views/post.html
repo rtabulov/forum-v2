@@ -12,7 +12,11 @@
         </div>
         <h1 style="font-size: 1.75rem; margin-top: 10px">{{.Title}}</h1>
         <p>
-            <span class="btn black btn-small">{{.Cat.Title}}</span>
+            {{range .Cats}}
+            <a href="/categories/{{.ID}}" class="btn black btn-small"
+                >{{.Title}}</a
+            ><br />
+            {{end}}
         </p>
 
         <hr />

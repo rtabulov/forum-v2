@@ -11,7 +11,7 @@ import (
 func (h *Handler) Prottected() e.Middleware {
 	return func(req *e.Request, res *e.Response, next e.Next) {
 		if user, _ := req.CustomData["User"]; user == nil {
-			res.Redirect(req.Referer())
+			res.Redirect("/")
 			return
 		}
 
@@ -25,7 +25,7 @@ func (h *Handler) NotLoggedIn() e.Middleware {
 		intfc := req.CustomData["User"]
 		if user, _ := intfc.(*forum.User); user != nil {
 			fmt.Println("Already logged in, User: ", user.Username)
-			res.Redirect(req.Referer())
+			res.Redirect("/")
 			return
 		}
 

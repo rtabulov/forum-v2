@@ -1,0 +1,1 @@
+sqlite3 forum.db < ./forum.db.sql

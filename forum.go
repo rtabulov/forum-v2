@@ -17,7 +17,6 @@ type Cat struct {
 // Post type
 type Post struct {
 	ID        uuid.UUID `db:"post_id"`
-	CatID     uuid.UUID `db:"cat_id"`
 	UserID    uuid.UUID `db:"user_id"`
 	Title     string    `db:"title"`
 	Body      string    `db:"body"`
@@ -63,7 +62,7 @@ type CommentLikes []CommentLike
 // PostDTO type
 type PostDTO struct {
 	*Post
-	Cat      *Cat
+	Cats     []Cat
 	User     *User
 	Comments []CommentDTO
 	Likes    PostLikes

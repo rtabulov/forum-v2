@@ -32,11 +32,11 @@
                     <a class="white-text" href="/post/{{.ID}}">{{.Title}}</a>
                 </td>
                 <td>
-                    <a
-                        href="/categories/{{.Cat.ID}}"
-                        class="btn black btn-small"
-                        >{{.Cat.Title}}</a
-                    >
+                    {{range .Cats}}
+                    <a href="/categories/{{.ID}}" class="btn black btn-small"
+                        >{{.Title}}</a
+                    ><br />
+                    {{end}}
                 </td>
                 <td class="center-align">{{.Likes.Votes}}</td>
                 <td class="center-align">{{len .Comments}}</td>

@@ -1,4 +1,5 @@
-go build -o ./tmp/main ./cmd
-git add tmp
+go build -o ./main ./cmd
+git add main
 git commit -m "build"
 git push heroku main
+rm main

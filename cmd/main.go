@@ -8,7 +8,6 @@ import (
 	"github.com/rtabulov/forum-v2/cookiestore"
 	"github.com/rtabulov/forum-v2/handler"
 	"github.com/rtabulov/forum-v2/middleware"
-	"github.com/rtabulov/forum-v2/migrate"
 	"github.com/rtabulov/forum-v2/sqlite"
 )
 
@@ -22,9 +21,9 @@ func main() {
 		log.Fatal(err)
 	}
 
-	if err := migrate.Migrate("forum.db.sql", store.CatStore.DB); err != nil {
-		log.Fatal(err)
-	}
+	// if err := migrate.Migrate("forum.db.sql", store.CatStore.DB); err != nil {
+	// 	log.Fatal(err)
+	// }
 
 	// init
 	cs := cookiestore.New()

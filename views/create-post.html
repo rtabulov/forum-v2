@@ -4,7 +4,7 @@
     <div class="row">
         <form
             style="padding-top: 50px; padding-bottom: 50px"
-            class="col s4 offset-s4"
+            class="col s6 offset-s3"
             action="/post"
             method="POST"
         >
@@ -24,7 +24,7 @@
                 </div>
 
                 <div class="input-field col s12">
-                    <select name="cat-id" required>
+                    <select name="cat-id" required multiple>
                         {{range .Cats}}
                         <option value="{{.ID}}">{{.Title}}</option>
                         {{end}}

@@ -43,9 +43,13 @@
                             >
                         </td>
                         <td>
-                            <span class="btn black btn-small"
-                                >{{.Cat.Title}}</span
-                            >
+                            {{range .Cats}}
+                            <a
+                                href="/categories/{{.ID}}"
+                                class="btn black btn-small"
+                                >{{.Title}}</a
+                            ><br />
+                            {{end}}
                         </td>
                         <td class="center-align">{{.Likes.Votes}}</td>
                         <td class="center-align">{{len .Comments}}</td>
@@ -84,9 +88,13 @@
                             >
                         </td>
                         <td>
-                            <span class="btn black btn-small"
-                                >{{.Cat.Title}}</span
-                            >
+                            {{range .Cats}}
+                            <a
+                                href="/categories/{{.ID}}"
+                                class="btn black btn-small"
+                                >{{.Title}}</a
+                            ><br />
+                            {{end}}
                         </td>
                         <td class="center-align">{{.Likes.Votes}}</td>
                         <td class="center-align">{{len .Comments}}</td>

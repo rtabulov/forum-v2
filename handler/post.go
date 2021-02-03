@@ -75,17 +75,10 @@ func (h *Handler) CreatePost() e.Middleware {
 		}
 		title := req.FormValue("title")
 		body := req.FormValue("body")
-		cat := req.FormValue("cat-id")
-		catID, err := uuid.FromString(cat)
-		if err != nil {
-			res.Error("Bad request", http.StatusBadRequest)
-			return
-		}
 
 		p := &forum.Post{
 			Title:  title,
 			Body:   body,
-			CatID:  catID,
 			UserID: user.ID,
 		}
 
@@ -93,6 +86,22 @@ func (h *Handler) CreatePost() e.Middleware {
 			res.Error("Bad request", http.StatusBadRequest)
 			log.Println(err)
 			return
+		}
+
+		cats := req.Form["cat-id"]
+		cids := []uuid.UUID{}
+		for _, c := range cats {
+			cid, err := uuid.FromString(c)
+			if err != nil {
+				continue
+			}
+			cids = append(cids, cid)
+		}
+
+		if len(cids) == 0 {
+			h.Store.DeletePost(p.ID)
+		} else {
+			h.Store.CratePostCats(p.ID, cids)
 		}
 
 		res.Redirect("/")
