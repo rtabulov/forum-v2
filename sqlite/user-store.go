@@ -42,7 +42,7 @@ func (s *UserStore) UserByUsername(username string) (*forum.User, error) {
 // CreateUser func
 func (s *UserStore) CreateUser(c *forum.User) error {
 	if c.ID == (uuid.UUID{}) {
-		c.ID = uuid.Must(uuid.NewV4())
+		c.ID = uuid.NewV4()
 	}
 
 	_, err := s.DB.Exec(`INSERT INTO users (user_id, username, email, password, avatar) 
