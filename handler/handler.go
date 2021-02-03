@@ -107,3 +107,24 @@ func (h *Handler) SignupPage() e.Middleware {
 		}
 	}
 }
+
+// Page404 func
+func (h *Handler) Page404() e.Middleware {
+	t := template.Must(template.ParseFiles("views/header.html", "views/404.html"))
+	return func(req *e.Request, res *e.Response, next e.Next) {
+		msgs := messages{}
+		if err := req.FormValue("error"); err != "" {
+			msgs = append(msgs, message{err, "danger"})
+		}
+
+		user, _ := req.CustomData["User"].(*forum.User)
+		err := t.Execute(res, responseData{
+			User:     user,
+			Messages: msgs,
+		})
+
+		if err != nil {
+			log.Print(fmt.Errorf(`error executing signup template: %w`, err))
+		}
+	}
+}

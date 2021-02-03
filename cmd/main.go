@@ -37,6 +37,8 @@ func main() {
 	// routes
 	app.Get("/", h.Home())
 
+	app.Page404(h.Page404())
+
 	app.Get("/login", h.NotLoggedIn(), h.LoginPage())
 	app.Get("/logout", h.Prottected(), h.Logout())
 
