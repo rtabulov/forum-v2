@@ -5,6 +5,7 @@ import (
 	"html/template"
 	"log"
 	"net/http"
+	"strings"
 
 	"github.com/rtabulov/forum-v2"
 	e "github.com/rtabulov/forum-v2/express"
@@ -76,8 +77,8 @@ func (h *Handler) CreatePost() e.Middleware {
 			h.ErrorPage(http.StatusUnauthorized, messageUnauthorized)(req, res, next)
 			return
 		}
-		title := req.FormValue("title")
-		body := req.FormValue("body")
+		title := strings.TrimSpace(req.FormValue("title"))
+		body := strings.TrimSpace(req.FormValue("body"))
 
 		p := &forum.Post{
 			Title:  title,
