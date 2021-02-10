@@ -17,18 +17,18 @@ func (h *Handler) UserPage() e.Middleware {
 		username, ok := req.Param("username")
 		pageUser, err := h.Store.UserByUsername(username)
 		if !ok || err != nil {
-			res.Error("user not found", http.StatusNotFound)
+			next()
 			return
 		}
 
 		posts, err := h.Store.UserPostsDTO(pageUser.ID)
 		if err != nil {
-			res.Error("Internal error", http.StatusInternalServerError)
+			h.ErrorPage(http.StatusInternalServerError, messageInternalError)(req, res, next)
 			return
 		}
 		likedPosts, err := h.Store.LikedPostsDTO(pageUser.ID)
 		if err != nil {
-			res.Error("Internal error", http.StatusInternalServerError)
+			h.ErrorPage(http.StatusInternalServerError, messageInternalError)(req, res, next)
 			return
 		}
 		user, _ := req.CustomData["User"].(*forum.User)

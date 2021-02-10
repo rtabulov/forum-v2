@@ -13,7 +13,7 @@ func (h *Handler) LikePost() e.Middleware {
 	return func(req *e.Request, res *e.Response, next e.Next) {
 		user, _ := req.CustomData["User"].(*forum.User)
 		if user == nil {
-			h.ErrorPage(http.StatusUnauthorized, messageUnauthorized)
+			h.ErrorPage(http.StatusUnauthorized, messageUnauthorized)(req, res, next)
 			return
 		}
 
@@ -63,7 +63,7 @@ func (h *Handler) LikeComment() e.Middleware {
 
 		user, _ := req.CustomData["User"].(*forum.User)
 		if user == nil {
-			h.ErrorPage(http.StatusUnauthorized, messageUnauthorized)
+			h.ErrorPage(http.StatusUnauthorized, messageUnauthorized)(req, res, next)
 			return
 		}
 

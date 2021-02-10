@@ -1,5 +1,6 @@
 module github.com/rtabulov/forum-v2
 
+// +heroku goVersion <version>
 go 1.15
 
 require (

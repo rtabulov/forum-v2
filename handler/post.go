@@ -50,7 +50,7 @@ func (h *Handler) CreatePostPage() e.Middleware {
 		cats, err := h.Store.Cats()
 		if err != nil {
 			res.Error("internal error", http.StatusInternalServerError)
-			h.ErrorPage(http.StatusInternalServerError, messageInternalError)
+			h.ErrorPage(http.StatusInternalServerError, messageInternalError)(req, res, next)
 			return
 		}
 

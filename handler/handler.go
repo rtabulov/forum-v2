@@ -47,7 +47,7 @@ func (h *Handler) Home() e.Middleware {
 	return func(req *e.Request, res *e.Response, next e.Next) {
 		posts, err := h.Store.PostsDTO()
 		if err != nil {
-			h.ErrorPage(http.StatusInternalServerError, messageInternalError)
+			h.ErrorPage(http.StatusInternalServerError, messageInternalError)(req, res, next)
 			return
 		}
 
