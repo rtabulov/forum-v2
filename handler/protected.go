@@ -8,7 +8,9 @@ import (
 // Prottected func
 func (h *Handler) Prottected() e.Middleware {
 	return func(req *e.Request, res *e.Response, next e.Next) {
-		if user, ok := req.CustomData["User"]; !ok || user == nil {
+		intfc, ok := req.CustomData["User"]
+		user, ok2 := intfc.(*forum.User)
+		if !ok || intfc == nil || !ok2 || user == nil {
 			res.Redirect("/")
 			return
 		}
