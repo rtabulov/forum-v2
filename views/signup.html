@@ -19,6 +19,7 @@
                         class="white-text validate"
                         required
                         title="at least 3 characters, only letters and numbers"
+                        pattern="[0-9a-zA-Z]{3,32}"
                     />
                 </div>
 
@@ -27,7 +28,7 @@
                     <input
                         id="email"
                         name="email"
-                        type="text"
+                        type="email"
                         autocomplete="off"
                         class="white-text validate"
                         required
@@ -43,6 +44,7 @@
                         name="password"
                         type="password"
                         autocomplete="off"
+                        minlength="3"
                     />
                 </div>
             </div>
