@@ -1,6 +1,5 @@
 .env
 tmp/
 vendor/
-# forum.db
-forum.db.journal
 forum.db
+forum.db.journal
