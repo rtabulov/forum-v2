@@ -19,20 +19,19 @@ func (h *Handler) PostPage() e.Middleware {
 		uid, err := uuid.FromString(id)
 
 		if !ok || err != nil {
-			res.Redirect("/")
+			next()
 			return
 		}
 
 		post, err := h.Store.PostDTO(uid)
 		if err != nil {
-			res.Status(http.StatusInternalServerError).JSON(e.Map{
-				"error": err.Error(),
-			})
+			next()
 			return
 		}
 
 		user, _ := req.CustomData["User"].(*forum.User)
 
+		res.Prepare()
 		err = t.Execute(res, responseData{
 			Post: post,
 			User: user,
@@ -51,9 +50,13 @@ func (h *Handler) CreatePostPage() e.Middleware {
 		cats, err := h.Store.Cats()
 		if err != nil {
 			res.Error("internal error", http.StatusInternalServerError)
+			h.ErrorPage(http.StatusInternalServerError, messageInternalError)
 			return
 		}
+
 		user, _ := req.CustomData["User"].(*forum.User)
+
+		res.Prepare()
 		err = t.Execute(res, responseData{
 			User: user,
 			Cats: cats,
@@ -70,7 +73,7 @@ func (h *Handler) CreatePost() e.Middleware {
 	return func(req *e.Request, res *e.Response, next e.Next) {
 		user, _ := req.CustomData["User"].(*forum.User)
 		if user == nil {
-			res.Error("Unauthorized", http.StatusUnauthorized)
+			h.ErrorPage(http.StatusUnauthorized, messageUnauthorized)(req, res, next)
 			return
 		}
 		title := req.FormValue("title")
@@ -99,11 +102,12 @@ func (h *Handler) CreatePost() e.Middleware {
 		}
 
 		if len(cids) == 0 {
+			h.ErrorPage(http.StatusBadRequest, "At least 1 catergory for a post")(req, res, next)
 			h.Store.DeletePost(p.ID)
-		} else {
-			h.Store.CratePostCats(p.ID, cids)
+			return
 		}
 
+		h.Store.CratePostCats(p.ID, cids)
 		res.Redirect("/")
 	}
 }

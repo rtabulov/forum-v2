@@ -33,6 +33,11 @@ func (r *Request) Param(p string) (string, bool) {
 	return v, ok
 }
 
+// SetParam func
+func (r *Request) SetParam(p, v string) {
+	r.params[p] = v
+}
+
 // request.params
 // request.body
 // requst.cookies

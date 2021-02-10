@@ -20,7 +20,7 @@ type message struct {
 type messages []message
 
 type responseData struct {
-	Messages   messages
+	Messages   []e.Message
 	User       *forum.User
 	Posts      []forum.PostDTO
 	Post       *forum.PostDTO
@@ -32,15 +32,13 @@ type responseData struct {
 
 // NewHandler func
 func NewHandler(store *sqlite.Store, cs cookiestore.CookieStore) *Handler {
-	t := template.Must(template.ParseFiles("views/header.html"))
-	return &Handler{Store: store, t: t, CS: cs}
+	return &Handler{Store: store, CS: cs}
 }
 
 // Handler type
 type Handler struct {
 	Store *sqlite.Store
 	CS    cookiestore.CookieStore
-	t     *template.Template
 }
 
 // Home func
@@ -49,16 +47,17 @@ func (h *Handler) Home() e.Middleware {
 	return func(req *e.Request, res *e.Response, next e.Next) {
 		posts, err := h.Store.PostsDTO()
 		if err != nil {
-			res.Status(http.StatusInternalServerError).JSON(e.Map{
-				"error": err.Error(),
-			})
+			h.ErrorPage(http.StatusInternalServerError, messageInternalError)
 			return
 		}
 
 		user, _ := req.CustomData["User"].(*forum.User)
+
+		res.Prepare()
 		err = t.Execute(res, responseData{
-			Posts: posts,
-			User:  user,
+			Posts:    posts,
+			User:     user,
+			Messages: res.GetMessages(),
 		})
 		if err != nil {
 			log.Print(fmt.Errorf(`error executing home template: %w`, err))
@@ -70,15 +69,12 @@ func (h *Handler) Home() e.Middleware {
 func (h *Handler) LoginPage() e.Middleware {
 	t := template.Must(template.ParseFiles("views/header.html", "views/login.html"))
 	return func(req *e.Request, res *e.Response, next e.Next) {
-		msgs := messages{}
-		if err := req.FormValue("error"); err != "" {
-			msgs = append(msgs, message{err, "danger"})
-		}
-
 		user, _ := req.CustomData["User"].(*forum.User)
+
+		res.Prepare()
 		err := t.Execute(res, responseData{
 			User:     user,
-			Messages: msgs,
+			Messages: res.GetMessages(),
 		})
 
 		if err != nil {
@@ -91,36 +87,12 @@ func (h *Handler) LoginPage() e.Middleware {
 func (h *Handler) SignupPage() e.Middleware {
 	t := template.Must(template.ParseFiles("views/header.html", "views/signup.html"))
 	return func(req *e.Request, res *e.Response, next e.Next) {
-		msgs := messages{}
-		if err := req.FormValue("error"); err != "" {
-			msgs = append(msgs, message{err, "danger"})
-		}
-
 		user, _ := req.CustomData["User"].(*forum.User)
+
+		res.Prepare()
 		err := t.Execute(res, responseData{
 			User:     user,
-			Messages: msgs,
-		})
-
-		if err != nil {
-			log.Print(fmt.Errorf(`error executing signup template: %w`, err))
-		}
-	}
-}
-
-// Page404 func
-func (h *Handler) Page404() e.Middleware {
-	t := template.Must(template.ParseFiles("views/header.html", "views/404.html"))
-	return func(req *e.Request, res *e.Response, next e.Next) {
-		msgs := messages{}
-		if err := req.FormValue("error"); err != "" {
-			msgs = append(msgs, message{err, "danger"})
-		}
-
-		user, _ := req.CustomData["User"].(*forum.User)
-		err := t.Execute(res, responseData{
-			User:     user,
-			Messages: msgs,
+			Messages: res.GetMessages(),
 		})
 
 		if err != nil {

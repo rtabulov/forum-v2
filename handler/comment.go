@@ -12,17 +12,17 @@ import (
 // CreateComment func
 func (h *Handler) CreateComment() e.Middleware {
 	return func(req *e.Request, res *e.Response, next e.Next) {
-		user, _ := req.CustomData["User"].(*forum.User)
-		if user == nil {
-			res.Error("Unauthorized", http.StatusUnauthorized)
-			return
-		}
-
 		body := req.FormValue("comment")
 		post, ok := req.Param("id")
 		postID, err := uuid.FromString(post)
 		if !ok || err != nil {
-			res.Error("Bad request", http.StatusBadRequest)
+			h.PostPage()(req, res, next)
+			return
+		}
+
+		user, _ := req.CustomData["User"].(*forum.User)
+		if user == nil {
+			h.ErrorPage(http.StatusUnauthorized, messageUnauthorized)(req, res, next)
 			return
 		}
 
@@ -33,7 +33,7 @@ func (h *Handler) CreateComment() e.Middleware {
 		}
 
 		if err := h.Store.CreateComment(c); err != nil {
-			res.Error("Bad request", http.StatusBadRequest)
+			h.ErrorPage(http.StatusInternalServerError, messageInternalError)(req, res, next)
 			log.Println(err)
 			return
 		}

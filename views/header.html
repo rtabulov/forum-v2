@@ -92,7 +92,7 @@
         {{template "body" .}} {{if .Messages}}
         <ul class="messages hide">
             {{range .Messages}}
-            <li data-type="{{.Type}}">{{.Text}}</li>
+            <li data-type="{{.Typ}}">{{.Message}}</li>
             {{end}}
         </ul>
         {{end}}

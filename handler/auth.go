@@ -2,7 +2,6 @@ package handler
 
 import (
 	"net/http"
-	"net/url"
 	"regexp"
 
 	"github.com/rtabulov/forum-v2"
@@ -21,33 +20,37 @@ func (h *Handler) Signup() e.Middleware {
 		// username check
 		match, _ := regexp.MatchString(`^[a-zA-Z\d]{3,}$`, username)
 		if !match {
-			res.Redirect("/signup?error=Username%20invalid")
+			res.Status(http.StatusBadRequest).AddMessage("danger", "Username invalid")
+			h.SignupPage()(req, res, next)
 			return
 		}
 
 		// password check
 		if len(password) < 3 {
-			res.Redirect("/signup?error=Password%20invalid")
+			res.Status(http.StatusBadRequest).AddMessage("danger", "Password invalid")
+			h.SignupPage()(req, res, next)
 			return
 		}
 
 		// email check
 		match, _ = regexp.MatchString(`^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$`, email)
 		if !match {
-			res.Redirect("/signup?error=Email%20invalid")
+			res.Status(http.StatusBadRequest).AddMessage("danger", "Email invalid")
+			h.SignupPage()(req, res, next)
 			return
 		}
 
 		hash, err := bcrypt.GenerateFromPassword([]byte(password), 0)
 		if err != nil {
-			res.Error("internal error", http.StatusInternalServerError)
+			h.ErrorPage(http.StatusInternalServerError, messageInternalError)(req, res, next)
 			return
 		}
 
 		user := &forum.User{Username: username, Email: email, Password: string(hash)}
 
 		if err := h.Store.CreateUser(user); err != nil {
-			res.Redirect("/signup?error=" + url.QueryEscape(err.Error()))
+			res.Status(http.StatusConflict).AddMessage("danger", "User already exists")
+			h.SignupPage()(req, res, next)
 			return
 		}
 
@@ -68,21 +71,21 @@ func (h *Handler) Login() e.Middleware {
 
 		// user does not exist
 		if err != nil {
-			res.Redirect("/login?error=User%20does%20not%20exist")
+			res.Status(http.StatusUnauthorized).AddMessage("danger", "User does not exist")
+			h.LoginPage()(req, res, next)
 			return
 		}
 
 		// passwords do not match
 		if err := bcrypt.CompareHashAndPassword([]byte(user.Password), []byte(password)); err != nil {
-
-			res.Redirect("/login?error=Password%20incorrect")
+			res.Status(http.StatusUnauthorized).AddMessage("danger", "Password is incorrect")
+			h.LoginPage()(req, res, next)
 			return
 		}
 
 		// success
 		c := h.CS.SetNewCookie(user)
 		res.SetCookie(c)
-
 		res.Redirect("/")
 	}
 }

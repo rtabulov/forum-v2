@@ -12,16 +12,15 @@ import (
 func (h *Handler) LikePost() e.Middleware {
 	return func(req *e.Request, res *e.Response, next e.Next) {
 		user, _ := req.CustomData["User"].(*forum.User)
-
-		post, ok := req.Param("id")
 		if user == nil {
-			res.Redirect("/post/" + post)
+			h.ErrorPage(http.StatusUnauthorized, messageUnauthorized)
 			return
 		}
 
+		post, ok := req.Param("id")
 		postID, err := uuid.FromString(post)
 		if !ok || err != nil {
-			res.Error("Bad request", http.StatusBadRequest)
+			next()
 			return
 		}
 
@@ -32,7 +31,9 @@ func (h *Handler) LikePost() e.Middleware {
 		} else if ups == "false" {
 			up = false
 		} else {
-			res.Error("Bad request", http.StatusBadRequest)
+			// res.Error("Bad request", http.StatusBadRequest)
+			res.Status(http.StatusBadRequest)
+			h.PostPage()
 			return
 		}
 
@@ -59,18 +60,24 @@ func (h *Handler) LikePost() e.Middleware {
 // LikeComment func
 func (h *Handler) LikeComment() e.Middleware {
 	return func(req *e.Request, res *e.Response, next e.Next) {
-		user, _ := req.CustomData["User"].(*forum.User)
 
-		c, ok := req.Param("id")
-		cID, err := uuid.FromString(c)
-		comm, _ := h.Store.Comment(cID)
+		user, _ := req.CustomData["User"].(*forum.User)
 		if user == nil {
-			res.Redirect("/post/" + comm.PostID.String())
+			h.ErrorPage(http.StatusUnauthorized, messageUnauthorized)
 			return
 		}
 
+		c, ok := req.Param("id")
+		cID, err := uuid.FromString(c)
 		if !ok || err != nil {
-			res.Error("Bad request", http.StatusBadRequest)
+			res.Status(http.StatusBadRequest)
+			h.Home()
+			return
+		}
+
+		comm, err := h.Store.Comment(cID)
+		if err != nil {
+			next()
 			return
 		}
 
@@ -81,7 +88,10 @@ func (h *Handler) LikeComment() e.Middleware {
 		} else if ups == "false" {
 			up = false
 		} else {
-			res.Error("Bad request", http.StatusBadRequest)
+			// res.Error("Bad request", http.StatusBadRequest)
+			res.Status(http.StatusBadRequest)
+			req.SetParam("id", comm.PostID.String())
+			h.PostPage()
 			return
 		}
 

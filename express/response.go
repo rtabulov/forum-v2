@@ -9,29 +9,46 @@ import (
 // Response q
 type Response struct {
 	http.ResponseWriter
-	req       *http.Request
-	statusSet bool
-	App       *App
-	status    int
+	req      *http.Request
+	App      *App
+	status   int
+	messages []Message
+}
+
+// AddMessage func
+func (res *Response) AddMessage(typ, msg string) {
+	res.messages = append(res.messages, Message{typ, msg})
+}
+
+// GetMessages func
+func (res *Response) GetMessages() []Message {
+	return res.messages
+}
+
+// Prepare func
+func (res *Response) Prepare() {
+	res.WriteHeader(res.status)
+}
+
+// Message type
+type Message struct {
+	Typ     string
+	Message string
 }
 
 func newResponse(r *http.Request, w http.ResponseWriter, app *App) *Response {
 	return &Response{
 		req:            r,
 		ResponseWriter: w,
-		statusSet:      false,
 		App:            app,
+		status:         http.StatusOK,
 	}
 }
 
 type responseFunc func(interface{}) error
 
 func (res *Response) respond(fn responseFunc, data interface{}) error {
-	if res.statusSet {
-		res.WriteHeader(res.status)
-	} else {
-		res.WriteHeader(http.StatusOK)
-	}
+	res.WriteHeader(res.status)
 
 	return fn(data)
 }
@@ -60,7 +77,6 @@ func (res *Response) Send(data string) error {
 // Status func
 func (res *Response) Status(code int) *Response {
 	res.status = code
-	res.statusSet = true
 	return res
 }
 
@@ -96,8 +112,6 @@ func (res *Response) ClearCookie(name string) {
 // Redirect func
 func (res *Response) Redirect(url string) {
 	status := res.status
-	if !res.statusSet {
-		status = http.StatusFound
-	}
+	status = http.StatusFound
 	http.Redirect(res.ResponseWriter, res.req, url, status)
 }

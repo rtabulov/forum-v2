@@ -90,10 +90,8 @@ func (app *App) ServeHTTP(w http.ResponseWriter, req *http.Request) {
 	request, response := newRequestResponse(app, req, w)
 	queue := app.useMiddleware
 
-	found := false
 	for pattern, methods := range app.tree {
 		if match, params := helpers.MatchAndParams(pattern, request.URL.Path); match {
-			found = true
 			request.params = helpers.MergeStringMaps(request.params, params)
 
 			if mws, ok := methods[request.Method]; ok {
@@ -105,10 +103,7 @@ func (app *App) ServeHTTP(w http.ResponseWriter, req *http.Request) {
 		}
 	}
 
-	if !found {
-		response.Status(http.StatusNotFound)
-		queue = append(queue, app.page404)
-	}
+	queue = append(queue, app.page404)
 
 	// execute middleware
 	for _, mw := range queue {
@@ -118,7 +113,6 @@ func (app *App) ServeHTTP(w http.ResponseWriter, req *http.Request) {
 		}
 
 		mw(request, response, next)
-
 		if !cntnue {
 			break
 		}
