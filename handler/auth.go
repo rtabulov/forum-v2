@@ -3,7 +3,6 @@ package handler
 import (
 	"net/http"
 	"regexp"
-	"strings"
 
 	"github.com/rtabulov/forum-v2"
 	"github.com/rtabulov/forum-v2/cookiestore"
@@ -14,7 +13,7 @@ import (
 // Signup func
 func (h *Handler) Signup() e.Middleware {
 	return func(req *e.Request, res *e.Response, next e.Next) {
-		username := strings.TrimSpace(req.FormValue("username"))
+		username := req.FormValue("username")
 		password := req.FormValue("password")
 		email := req.FormValue("email")
 
