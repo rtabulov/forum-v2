@@ -1,80 +1,80 @@
 {{define "body"}}
 
 <div class="container">
-    <div class="row">
-        <form
-            style="padding-top: 50px; padding-bottom: 50px"
-            class="col s6 offset-s3"
-            action="/post"
-            method="POST"
-        >
-            <div class="row">
-                <div class="input-field col s12">
-                    <label for="title">Title</label>
-                    <input
-                        id="title"
-                        name="title"
-                        type="text"
-                        autocomplete="off"
-                        class="white-text validate"
-                        minlength="3"
-                        title="3 characters minimum"
-                        required
-                    />
-                </div>
+  <div class="row">
+    <form
+      style="padding-top: 50px; padding-bottom: 50px"
+      class="col s6 offset-s3"
+      action="/post"
+      method="POST"
+    >
+      <div class="row">
+        <div class="input-field col s12">
+          <label for="title">Title</label>
+          <input
+            id="title"
+            name="title"
+            type="text"
+            autocomplete="off"
+            class="white-text validate"
+            minlength="3"
+            title="3 characters minimum"
+            required
+          />
+        </div>
 
-                <div class="input-field col s12">
-                    <select name="cat-id" required multiple>
-                        {{range .Cats}}
-                        <option value="{{.ID}}">{{.Title}}</option>
-                        {{end}}
-                    </select>
-                    <label>Category</label>
-                </div>
+        <div class="input-field col s12">
+          <select class="validate" name="cat-id" required multiple>
+            {{range .Cats}}
+            <option value="{{.ID}}">{{.Title}}</option>
+            {{end}}
+          </select>
+          <label>Category</label>
+        </div>
 
-                <div class="input-field col s12">
-                    <label for="body">Body</label>
-                    <textarea
-                        class="validate materialize-textarea white-text"
-                        id="body"
-                        name="body"
-                        autocomplete="off"
-                        minlength="3"
-                        rows="2"
-                        required
-                    ></textarea>
-                </div>
-            </div>
+        <div class="input-field col s12">
+          <label for="body">Body</label>
+          <textarea
+            class="validate materialize-textarea white-text"
+            id="body"
+            name="body"
+            autocomplete="off"
+            minlength="3"
+            rows="2"
+            required
+          ></textarea>
+        </div>
+      </div>
 
-            <button type="submit" class="btn blue-grey darken-2">Post</button>
-        </form>
-    </div>
+      <button type="submit" class="btn blue-grey darken-2">Post</button>
+    </form>
+  </div>
 </div>
 
 <style>
-    .select-dropdown.dropdown-trigger {
-        color: white !important;
-    }
-    .caret {
-        fill: white !important;
-    }
-    .select-dropdown.dropdown-content li {
-        background-color: #455a64;
-    }
+  .select-dropdown.dropdown-trigger {
+    color: white !important;
+  }
+  .caret {
+    fill: white !important;
+  }
+  .select-dropdown.dropdown-content li {
+    background-color: #455a64;
+  }
 
-    .select-dropdown.dropdown-content li > span {
-        color: white !important;
-    }
+  .select-dropdown.dropdown-content li > span {
+    color: white !important;
+  }
 
-    .select-dropdown.dropdown-content li.selected {
-        background-color: #263238;
-    }
-    .select-dropdown.dropdown-content li:hover {
-        background-color: #37474f;
-    }
-    body.keyboard-focused .select-dropdown.dropdown-content li:focus {
-        background-color: #263238;
-    }
+  .select-dropdown.dropdown-content li.selected {
+    background-color: #263238;
+  }
+  .select-dropdown.dropdown-content li:hover {
+    background-color: #37474f;
+  }
+  body.keyboard-focused .select-dropdown.dropdown-content li:focus {
+    background-color: #263238;
+  }
 </style>
 
 {{end}}

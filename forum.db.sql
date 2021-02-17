@@ -3,8 +3,8 @@ DROP TABLE IF EXISTS "posts";
 CREATE TABLE "posts" (
 	"post_id"	TEXT NOT NULL,
 	"user_id"	TEXT NOT NULL,
-	"title"	TEXT NOT NULL CHECK(length('title') >= 3),
-	"body"	TEXT NOT NULL CHECK(length('body') >= 3),
+	"title"	TEXT NOT NULL CHECK(length("title") >= 3),
+	"body"	TEXT NOT NULL CHECK(length("body") >= 3),
 	"created_at"	INTEGER DEFAULT (strftime('%s', 'now')),
 	PRIMARY KEY("post_id"),
 	FOREIGN KEY("user_id") REFERENCES "users"("user_id")
@@ -39,8 +39,8 @@ CREATE TABLE "comments" (
 DROP TABLE IF EXISTS "cats";
 CREATE TABLE "cats" (
 	"cat_id"	TEXT NOT NULL,
-	"title"	TEXT NOT NULL CHECK(length('title') >= 3),
-	"description"	TEXT CHECK(length('title') >= 3),
+	"title"	TEXT NOT NULL CHECK(length("title") >= 3),
+	"description"	TEXT CHECK(length("description") >= 3),
 	PRIMARY KEY("cat_id")
 );
 DROP TABLE IF EXISTS "post_cats";
@@ -55,7 +55,7 @@ CREATE TABLE "users" (
 	"user_id"	TEXT NOT NULL,
 	"username"	TEXT NOT NULL CHECK(length("username") >= 3) UNIQUE,
 	"email"	TEXT NOT NULL CHECK("email" LIKE '%_@__%.__%') UNIQUE,
-	"password"	TEXT NOT NULL CHECK(length('password') >= 3),
+	"password"	TEXT NOT NULL CHECK(length("password") >= 3),
 	"avatar"	TEXT DEFAULT '',
 	"created_at"	INTEGER DEFAULT (strftime('%s', 'now')),
 	PRIMARY KEY("user_id")
