@@ -50,7 +50,6 @@ func (h *Handler) CreatePostPage() e.Middleware {
 	return func(req *e.Request, res *e.Response, next e.Next) {
 		cats, err := h.Store.Cats()
 		if err != nil {
-			res.Error("internal error", http.StatusInternalServerError)
 			h.ErrorPage(http.StatusInternalServerError, messageInternalError)(req, res, next)
 			return
 		}
@@ -59,8 +58,9 @@ func (h *Handler) CreatePostPage() e.Middleware {
 
 		res.Prepare()
 		err = t.Execute(res, responseData{
-			User: user,
-			Cats: cats,
+			User:     user,
+			Cats:     cats,
+			Messages: res.GetMessages(),
 		})
 
 		if err != nil {
@@ -87,7 +87,10 @@ func (h *Handler) CreatePost() e.Middleware {
 		}
 
 		if err := h.Store.CreatePost(p); err != nil {
-			res.Error("Bad request", http.StatusBadRequest)
+			// res.Error("Bad request", http.StatusBadRequest)
+			res.Status(http.StatusBadRequest)
+			res.AddMessage("danger", "Please enter valid data")
+			h.CreatePostPage()(req, res, next)
 			log.Println(err)
 			return
 		}
@@ -103,7 +106,9 @@ func (h *Handler) CreatePost() e.Middleware {
 		}
 
 		if len(cids) == 0 {
-			h.ErrorPage(http.StatusBadRequest, "At least 1 catergory for a post")(req, res, next)
+			res.Status(http.StatusBadRequest)
+			res.AddMessage("danger", "Select at least one category")
+			h.CreatePostPage()(req, res, next)
 			h.Store.DeletePost(p.ID)
 			return
 		}

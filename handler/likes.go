@@ -31,7 +31,6 @@ func (h *Handler) LikePost() e.Middleware {
 		} else if ups == "false" {
 			up = false
 		} else {
-			// res.Error("Bad request", http.StatusBadRequest)
 			res.Status(http.StatusBadRequest)
 			h.PostPage()
 			return
@@ -88,7 +87,6 @@ func (h *Handler) LikeComment() e.Middleware {
 		} else if ups == "false" {
 			up = false
 		} else {
-			// res.Error("Bad request", http.StatusBadRequest)
 			res.Status(http.StatusBadRequest)
 			req.SetParam("id", comm.PostID.String())
 			h.PostPage()
