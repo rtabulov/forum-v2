@@ -3,6 +3,7 @@
 <div class="container">
   <div class="row">
     <form
+      id="create-post-form"
       style="padding-top: 50px; padding-bottom: 50px"
       class="col s6 offset-s3"
       action="/post"
@@ -24,7 +25,7 @@
         </div>
 
         <div class="input-field col s12">
-          <select class="validate" name="cat-id" required multiple>
+          <select id="cat-input" name="cat-id" multiple>
             {{range .Cats}}
             <option value="{{.ID}}">{{.Title}}</option>
             {{end}}
@@ -50,6 +51,25 @@
     </form>
   </div>
 </div>
+
+<script>
+  var inst;
+  document.addEventListener('DOMContentLoaded', function () {
+    inst = M.FormSelect.init(document.querySelector('select'), {});
+  });
+
+  document
+    .getElementById('create-post-form')
+    .addEventListener('submit', function (e) {
+      if (!inst || !inst.getSelectedValues().length) {
+        e.preventDefault();
+        M.toast({
+          html: 'select at least one category',
+          classes: 'yellow darken-2',
+        });
+      }
+    });
+</script>
 
 <style>
   .select-dropdown.dropdown-trigger {
