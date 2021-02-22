@@ -1,25 +1,21 @@
-# THE Forum
+# yet another forum
 
-## Available on heroku
+### run with Docker
 
-[https://rtforum.herokuapp.com/](https://rtforum.herokuapp.com/)
-
-## Docker
-
-### build
+#### build
 
 `docker build -t forum .`
 
-### run
+#### run
 
 `docker run -dp 8080:8080 forum`
 
-## Manual
+### local build
 
-### build
+#### build
 
 `go build -o ./tmp/main ./cmd`
 
-### run
+#### run
 
 `./tmp/main`
