@@ -47,8 +47,9 @@ DROP TABLE IF EXISTS "post_cats";
 CREATE TABLE "post_cats" (
 	"post_id"	TEXT NOT NULL,
 	"cat_id"	TEXT NOT NULL,
-	FOREIGN KEY("post_id") REFERENCES "posts"("post_id")
-	FOREIGN KEY("cat_id") REFERENCES "cats"("cat_id")
+	FOREIGN KEY("post_id") REFERENCES "posts"("post_id"),
+	FOREIGN KEY("cat_id") REFERENCES "cats"("cat_id"),
+	PRIMARY KEY("post_id", "cat_id")
 );
 DROP TABLE IF EXISTS "users";
 CREATE TABLE "users" (
