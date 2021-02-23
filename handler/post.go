@@ -34,8 +34,9 @@ func (h *Handler) PostPage() e.Middleware {
 
 		res.Prepare()
 		err = t.Execute(res, responseData{
-			Post: post,
-			User: user,
+			Post:     post,
+			User:     user,
+			Messages: res.GetMessages(),
 		})
 
 		if err != nil {

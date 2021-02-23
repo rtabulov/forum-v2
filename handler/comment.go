@@ -1,7 +1,6 @@
 package handler
 
 import (
-	"log"
 	"net/http"
 	"strings"
 
@@ -34,8 +33,9 @@ func (h *Handler) CreateComment() e.Middleware {
 		}
 
 		if err := h.Store.CreateComment(c); err != nil {
-			h.ErrorPage(http.StatusInternalServerError, messageInternalError)(req, res, next)
-			log.Println(err)
+			// h.ErrorPage(http.StatusBadRequest, "i see what you're trying to do here... don't do that. just don't")(req, res, next)
+			res.AddMessage("danger", "i see what you're trying to do here... don't do that. just don't")
+			h.PostPage()(req, res, next)
 			return
 		}
 
